@@ -163,7 +163,7 @@ public:
     void rectangle( float ax, float ay, float awidth, float aheight );
     void line( float ax, float ay, float ax2, float ay2 );
     void triangle( float ax, float ay, float ax2, float ay2, float ax3, float ay3 );
-    void triangle( ofVec2f ap1, ofVec2f ap2, ofVec2f ap3 );
+    void triangle( glm::vec2 ap1, glm::vec2 ap2, glm::vec2 ap3 );
     void polyline( ofPolyline aline );
     
     void setPenColor( int aPenNumberCy, ofColor aColor );
@@ -191,7 +191,7 @@ public:
     void disableCapture();
     bool isCapturing();
     
-    ofVec2f getPenPosition();
+    glm::vec2 getPenPosition();
     int getPenStatus();
     ofRectangle getHardClipLimits();
     

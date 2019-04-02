@@ -476,12 +476,12 @@ void ofxHPGL::triangle( float ax, float ay, float ax2, float ay2, float ax3, flo
 }
 
 //--------------------------------------------------------------
-void ofxHPGL::triangle( ofVec2f ap1, ofVec2f ap2, ofVec2f ap3 ) {
+void ofxHPGL::triangle( glm::vec2 ap1, glm::vec2 ap2, glm::vec2 ap3 ) {
     ofPolyline tpoly;
-    tpoly.addVertex( ap1 );
-    tpoly.addVertex( ap2 );
-    tpoly.addVertex( ap3 );
-    tpoly.addVertex( ap1 );
+    tpoly.addVertex( ap1.x, ap1.y );
+    tpoly.addVertex( ap2.x, ap2.y );
+    tpoly.addVertex( ap3.x, ap3.y );
+    tpoly.addVertex( ap1.x, ap1.y );
     
     polyline( tpoly );
 }
@@ -870,15 +870,16 @@ bool ofxHPGL::isCapturing() {
 }
 
 //--------------------------------------------------------------
-ofVec2f ofxHPGL::getPenPosition() {
-    ofVec2f tpos;
+glm::vec2 ofxHPGL::getPenPosition() {
+    glm::vec2 tpos;
     ofxHPGLSerialCommand com;
     com.command = "OA;";
     sendBlockingResponse( com );
     if( com.didReceiveResponse() ) {
         vector< string > tstrings = ofSplitString( com.printerResponse, "," );
         if( tstrings.size() == 3 ) {
-            tpos.set( ofToInt(tstrings[0]), ofToInt(tstrings[1]) );
+            tpos.x = ofToInt(tstrings[0]);
+            tpos.y = ofToInt(tstrings[1]);
         }
     }
     return tpos;
@@ -1151,7 +1152,7 @@ vector< ofxHPGLSerialCommand > ofxHPGL::_parseHPGLCommandToPrinterCommand( ofxHP
     
     if( aCommand.type == ofxHPGLCommand::SHAPE ) {
         ofPolyline& cpoly = aCommand.polyline;
-        vector< ofPoint > verts = cpoly.getVertices();
+        auto verts = cpoly.getVertices();
         if( verts.size() < 2 ) {
             ofLogWarning() << "_parseHPGLCommandToPrinterCommand :: SHAPE : num verts less than 2 ";
             return returnCommands;
